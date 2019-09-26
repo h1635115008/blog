@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.aftertomorrow.dao.GuestMessageDao">
+	<insert id="addGuestMessage" parameterType="guestMessage">
+		insert into
+		guestmessage(name,email,words,time)
+		values(#{name},#{email},#{words},#{time})
+	</insert>
+	<select id="listAll" resultMap="guestMessageResult">
+		select * from guestmessage
+	</select>
+	<resultMap type="guestMessage" id="guestMessageResult">
+		<id property="id" column="id"></id>
+		<id property="name" column="name"></id>
+		<id property="email" column="email"></id>
+		<id property="words" column="words"></id>
+		<id property="time" column="time"></id>
+		<collection property="messageReplys" column="id" ofType="messageReply"
+			select="cn.aftertomorrow.dao.MessageReplyDao.findByGuestmessage_id"></collection>
+	</resultMap>
+</mapper>

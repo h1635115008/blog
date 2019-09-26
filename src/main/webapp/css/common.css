@@ -1,0 +1,741 @@
+@CHARSET "UTF-8";
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/*
+	字体
+*/
+@font-face {
+    font-family: 'iconfont';  /* project id 693342 */
+    src: url('//at.alicdn.com/t/font_693342_5hwvclcf9dk.eot');
+    src: url('//at.alicdn.com/t/font_693342_5hwvclcf9dk.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_693342_5hwvclcf9dk.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_693342_5hwvclcf9dk.woff') format('woff'),
+    url('//at.alicdn.com/t/font_693342_5hwvclcf9dk.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_693342_5hwvclcf9dk.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 20px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+	加载条
+*/
+#loding {
+    height: 1px;
+    background: deepskyblue;
+    position: fixed;
+    border-radius: 1px;
+    left: 0;
+    top: 0;
+    box-shadow: 2px 2px 5px rgba(0, 191, 255, .5);
+    z-index: 100;
+}
+
+/*
+	头部
+*/
+header {
+    width: 100%;
+    height: 56px;
+    position: fixed;
+    top: 0px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
+}
+
+.serachBox {
+    position: absolute;
+    right: 32px;
+    top: 16px;
+    width: 34px;
+    height: 22px;
+    transition: width 0.3s;
+}
+
+.serachBox:hover {
+    width: 200px;
+}
+
+.serachBox .serachIcon {
+    width: 23px;
+    height: 23px;
+    color: #8a8a8a;
+    float: right;
+    display: block;
+    transition: color 0.3s;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+.serachBox:hover .serachIcon {
+}
+
+.serachBox .serach {
+    border: none;
+    display: block;
+    height: 22px;
+    width: 0;
+    float: right;
+    transition: width 0.3s;
+    border-radius: 6px;
+}
+
+
+.serachBox:hover .serach {
+    width: 150px;
+}
+
+.serachBox .serach .inputBox {
+    border: none;
+    display: block;
+    height: 20px;
+    width: 0;
+    float: right;
+    transition: width 0.3s;
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.serachBox:hover .serach .inputBox {
+    width: 150px;
+    border: solid 1px #8a8a8a;
+}
+
+.serachBox .serach .inputBox .input {
+    border: none;
+    width: 140px;
+    display: block;
+    padding: 0 5px;
+    height: 20px;
+    transition: width 0.3s;
+    outline: none;
+    border-radius: 6px;
+    color: #8a8a8a;
+}
+
+.serachBox .serach .result {
+    border: none;
+    display: block;
+    width: 0;
+    background: #8a8a8a;
+    transition: width 0.3s;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.serachBox:hover .serach .result {
+    width: 150px;
+}
+
+.serachBox .serach .result .resultItem {
+    width: 140px;
+    display: block;
+    padding: 0 5px;
+    cursor: pointer;
+    color: #FFFFFF;
+    border-bottom: solid 1px white;
+    background: #8a8a8a;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.serachBox .serach .result .resultItem:hover {
+    color: #000000;
+    background: white;
+}
+
+body {
+    background-color: #f5f6f7;
+}
+
+body #background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: block;
+    z-index: -1000;
+}
+
+/*
+	导航侧栏
+*/
+#name {
+    display: block;
+    text-decoration: none;
+    width: 220px;
+    height: 56px;
+    line-height: 56px;
+    font-size: 30px;
+    margin: auto;
+    color: #8a8a8a;
+    text-align: center;
+}
+
+#check {
+    display: none;
+}
+
+#navBox {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 25px;
+    top: 15px;
+}
+
+#button {
+    display: block;
+    width: 30px;
+    height: 30px;
+    transition: transform 1s;
+}
+
+#button:hover {
+    cursor: pointer;
+}
+
+#button:before {
+    margin-bottom: 5px;
+}
+
+#button:before, #button:after {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 5px;
+    transition: transform 1s;
+    background: #8a8a8a;
+    border-radius: 5px;
+}
+
+#button #item {
+    margin-bottom: 5px;
+    width: 30px;
+    height: 5px;
+    transition: width 0.3s;
+    background: #8a8a8a;
+    border-radius: 5px;
+}
+
+#nav {
+    width: 300px;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: -300px;
+    transition: left 1s;
+    background: #FFFFFF;
+    z-index: 1000;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+#nav #persionalInfo {
+    width: 250px;
+    height: 300px;
+    padding-top: 50px;
+    margin: 0 auto;
+}
+
+#nav #persionalInfo #icon {
+    display: block;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    margin: 0 auto;
+}
+
+#nav #persionalInfo #nickName {
+    display: block;
+    height: 20px;
+    width: 190px;
+    margin-left: 10px;
+    line-height: 20px;
+    background: #8a8a8a;
+    border-radius: 5px;
+    margin: 20px auto;
+    padding: 3px;
+    color: white;
+    padding-left: 10px;
+}
+
+#nav #persionalInfo #email {
+    display: block;
+    height: 20px;
+    width: 190px;
+    padding: 3px;
+    line-height: 20px;
+    background: #8a8a8a;
+    border-radius: 5px;
+    margin: 20px auto;
+    padding-left: 10px;
+    color: white;
+}
+
+#nav #navigation {
+    width: 200px;
+    height: 500px;
+    margin: 50px auto;
+}
+
+#nav #navigation div {
+    width: 200px;
+    height: 250px;
+    list-style: none;
+}
+
+#nav #navigation div a {
+    cursor: pointer;
+    display: block;
+    width: 200px;
+    height: 20px;
+    padding: 3px;
+    background: #8a8a8a;
+    color: white;
+    margin: 20px auto;
+    border-radius: 5px;
+    list-style: none;
+    border: solid 1px #8a8a8a;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+#nav #navigation div a:hover {
+    background: white;
+    color: black;
+    border: solid 1px black;
+}
+
+#nav #navigation div a i {
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    float: left;
+}
+
+#nav #navigation div a span {
+    width: 100px;
+    height: 20px;
+    display: block;
+    margin-left: 10px;
+    float: left;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+#mobile {
+    width: 100%;
+    height: 0;
+    background: white;
+    left: 0;
+    top: 56px;
+    overflow: hidden;
+    position: fixed;
+    /* display: none; */
+}
+
+#mobile a {
+    color: #8a8a8a;
+    width: 92%;
+    padding-bottom: 10px;
+    margin: auto;
+    display: block;
+    opacity: 0;
+    text-decoration: none;
+    border-bottom: 1px solid #e5e5e5;
+    transition: padding-top .5s, opacity .5s;
+}
+
+#mobile a i {
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+    line-height: 20px;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 5px;
+}
+
+#mobile a span {
+    width: 80px;
+    height: 20px;
+    font-size: 16px;
+    line-height: 20px;
+    display: inline-block;
+}
+
+#check:checked + #button:before {
+    transform: matrix(-0.707, -0.707, 0.707, -0.707, 0, 10);
+}
+
+#check:checked + #button:after {
+    transform: matrix(-0.707, 0.707, -0.707, -0.707, 0, -10);
+}
+
+#check:checked + #button {
+    transform: translate(280px, 0px);
+}
+
+#check:checked + #button #item {
+    width: 0px;
+}
+
+#check:checked + #button + #nav {
+    left: 0;
+}
+
+#check:checked + #button + #nav + #mobile a {
+    padding-top: 10px;
+    opacity: 1;
+}
+
+/*
+	主体
+*/
+.main {
+    width: 978px;
+    margin: 100px auto;
+    padding: 1px;
+}
+
+.main .content {
+    width: 100%;
+    margin-bottom: 60px;
+    border-radius: 10px;
+    margin-top: 50px;
+    padding-top: 10px;
+    color: white;
+    margin: auto;
+    min-height: 800px;
+}
+
+/* .main .aside {
+	width: 258px;
+	height: 300px;
+	background: rgba(39, 40, 34, 0.8);
+	border-radius: 10px;
+	margin-top: 60px;
+	margin-left: 10px;
+	color: white;
+	left: 710px;
+	top: 0px;
+	position: absolute;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, .12);
+} */
+/*
+	回到顶部
+*/
+.back {
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    right: 5%;
+    bottom: 12%;
+    display: none;
+    border-radius: 20px;
+    background: #8a8a8a;
+}
+
+.back .up {
+    font-size: 30px;
+    text-align: center;
+    line-height: 40px;
+    width: 38px;
+    height: 38px;
+    color: white;
+    display: block;
+    border-radius: 20px;
+    cursor: pointer;
+    border: solid 1px #8a8a8a;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.back:hover .up {
+    background: white;
+    color: black;
+    border: solid 1px black;
+}
+
+/*
+	尾部
+*/
+footer {
+    width: 100%;
+    height: 56px;
+    background: #FFFFFF;
+    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, .05);
+}
+
+footer .copyright {
+    width: 320px;
+    height: 56px;
+    text-align: center;
+    margin: 0 auto;
+    color: #8a8a8a;
+    font-size: 20px;
+    line-height: 56px;
+}
+
+/*
+   响应布局
+*/
+@media all and (max-width: 1024px) {
+    /* .main .aside {
+        display: none;
+    } */
+    .main {
+        width: 98%;
+        margin: 60px auto;
+    }
+
+    /* 	.main .content {
+            width: 98%;
+            position: none;
+            margin: 0 auto;
+            margin-top: 50px;
+        } */
+    footer .copyright {
+        font-size: 16px;
+    }
+}
+
+/*
+	分页
+*/
+.pagingBox {
+    width: 99%;
+    height: 50px;
+    background: #FFF;
+    border-radius: 5px;
+    margin: 30px auto;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+.pagingBox .paging {
+    width: 99%;
+    height: 50px;
+    margin: 0px auto;
+}
+
+.pagingBox .paging .page {
+    list-style: none;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    float: left;
+    font-size: 20px;
+    margin: 8px 8px 8px 8px;
+    background: white;
+}
+
+.pagingBox .paging .index {
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.pagingBox .paging .pre_page {
+    margin-right: 0;
+    color: #8a8a8a;
+    cursor: pointer;
+    background: none;
+}
+
+.pagingBox .paging .next_page {
+    margin-left: 0;
+    color: #8a8a8a;
+    cursor: pointer;
+    background: none;
+}
+
+.pagingBox .paging .pre_page:hover, .pagingBox .paging .next_page:hover {
+    color: #8a8a8a;
+}
+
+.pagingBox .paging .more {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 25px;
+    background: none;
+    color: #8a8a8a;
+    cursor: default;
+}
+
+.pagingBox .paging a {
+    display: block;
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.pagingBox .paging .index a {
+    color: #8a8a8a;
+}
+
+.pagingBox .paging .index a:hover {
+    background: #8a8a8a;
+    color: white;
+}
+
+.pagingBox .paging .current a {
+    background: #8a8a8a;
+    color: white;
+}
+
+.pagingBox .paging .pre_page a, .pagingBox .paging .next_page a {
+    color: #8a8a8a;
+    cursor: pointer;
+}
+
+.pagingBox .paging .pre_page a:hover, .pagingBox .paging .next_page a:hover {
+    color: black;
+}
+
+/*
+	响应布局
+*/
+@media all and (max-width: 414px) {
+    #name {
+        width: 180px;
+        font-size: 22px;
+        text-align: center;
+    }
+
+    #nav {
+        display: none;
+        width: 186px;
+        height: 100%;
+        position: fixed;
+        top: 0px;
+        left: -300px;
+        transition: left 1s;
+        z-index: 1000;
+    }
+
+    #nav #navigation {
+        width: 180px;
+        height: 250px;
+        margin: 0px auto;
+    }
+
+    #nav #navigation div {
+        width: 180px;
+        height: 240px;
+        list-style: none;
+    }
+
+    #nav #navigation div a {
+        cursor: pointer;
+        display: block;
+        width: 160px;
+        height: 20px;
+        padding: 3px;
+        background: #8a8a8a;
+        color: white;
+        margin: 20px auto;
+        border-radius: 5px;
+        list-style: none;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+    #nav #persionalInfo {
+        width: 180px;
+        height: 224px;
+        padding-top: 30px;
+        margin: 0 auto;
+    }
+
+    #nav #persionalInfo #icon {
+        display: block;
+        height: 125px;
+        width: 125px;
+        border-radius: 100px;
+        margin: 0 auto;
+    }
+
+    #nav #persionalInfo #nickName {
+        display: block;
+        height: 20px;
+        width: 156px;
+        margin-left: 10px;
+        line-height: 20px;
+        background: #8a8a8a;
+        border-radius: 5px;
+        margin: 20px auto;
+        padding: 3px;
+        padding-left: 10px;
+    }
+
+    #nav #persionalInfo #email {
+        display: block;
+        height: 20px;
+        width: 156px;
+        padding: 3px;
+        line-height: 20px;
+        background: #8a8a8a;
+        border-radius: 5px;
+        margin: 20px auto;
+        padding-left: 10px;
+        font-size: 15px;
+    }
+
+    #check:checked + #button {
+        transform: translate(0px, 0px);
+    }
+
+    #button {
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin-top: 5px;
+        transition: transform 1s;
+    }
+
+    #button:before, #button:after {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 2px;
+        transition: transform 1s;
+        background: #8a8a8a;
+        border-radius: 5px;
+    }
+
+    #button #item {
+        margin-bottom: 5px;
+        width: 20px;
+        height: 2px;
+        transition: width 0.3s;
+        background: #8a8a8a;
+        border-radius: 5px;
+    }
+
+    #check:checked + #button:before {
+        transform: matrix(-0.707, -0.707, 0.707, -0.707, 0, 4);
+    }
+
+    #nav {
+        display: none;
+        overflow: scroll;
+    }
+
+    .pagingBox .paging .page {
+        margin: 8px 0px 8px 3px;
+    }
+
+    #check:checked + #button + #nav + #mobile {
+        height: 100%;
+    }
+}

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         id="WebApp_ID" version="3.1">
+    <!--spring配置文件位置-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+    <!--spring监听器-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--自定义监听器-->
+    <listener>
+        <listener-class>cn.aftertomorrow.listener.InitComponet</listener-class>
+    </listener>
+    <!--编码过滤器-->
+    <filter>
+        <filter-name>encoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!--springmvc核心控制器-->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springmvc-config.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <!--&lt;!&ndash; servlet 定义 &ndash;&gt;
+    <servlet>
+        <servlet-name>ErrorHandler</servlet-name>
+        <servlet-class>ErrorHandler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Servlet</servlet-name>
+        <servlet-class>cn.aftertomorrow.servlet.Servlet</servlet-class>
+    </servlet>
+    &lt;!&ndash; servlet 映射 &ndash;&gt;
+    <servlet-mapping>
+        <servlet-name>ErrorHandler</servlet-name>
+        <url-pattern>/ErrorHandler</url-pattern>
+    </servlet-mapping>-->
+    <!-- error-code 相关的错误页面 -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/page/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/page/error.jsp</location>
+    </error-page>
+    <!-- exception-type 相关的错误页面 -->
+    <error-page>
+        <exception-type>
+            javax.servlet.ServletException
+        </exception-type>
+        <location>/WEB-INF/page/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.io.IOException</exception-type>
+        <location>/WEB-INF/page/error.jsp</location>
+    </error-page>
+</web-app>

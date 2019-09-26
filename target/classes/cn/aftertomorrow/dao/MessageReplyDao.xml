@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.aftertomorrow.dao.MessageReplyDao">
+	<insert id="addMessageReply" parameterType="messageReply">
+		insert into
+		messagereply(guestmessage_id,name,email,words,time)
+		values(#{guestmessage_id},#{name},#{email},#{words},#{time})
+	</insert>
+	<select id="findByGuestmessage_id" parameterType="Integer"
+		resultType="messageReply">
+		select * from messagereply
+		where
+		guestmessage_id=#{guestmessage_id}
+	</select>
+</mapper>
