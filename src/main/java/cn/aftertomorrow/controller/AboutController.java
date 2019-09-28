@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AboutController {
     @Autowired
     private ApplicationContext applicationContext;
-
     @RequestMapping("/about")
     public String goToAbout() {
         return "about";

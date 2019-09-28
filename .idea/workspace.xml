@@ -6,7 +6,11 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb17b315-d76c-4af9-93d6-e4b2903cde62" name="Default Changelist" comment="" />
+    <list default="true" id="cb17b315-d76c-4af9-93d6-e4b2903cde62" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/AboutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/AboutController.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/test/target/" />
@@ -35,11 +39,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/ArticleController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="79">
-              <caret line="63" column="27" lean-forward="true" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+            <state relative-caret-position="169">
+              <caret line="71" column="6" selection-start-line="71" selection-start-column="6" selection-end-line="71" selection-end-column="6" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#findBypage#0;class#ArticleController#0" />
@@ -47,6 +51,15 @@
                 <element signature="method#findByTag#0;class#ArticleController#0" />
                 <element signature="method#findById#0;class#ArticleController#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/AboutController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -132,6 +145,9 @@
       <replace>js/lib</replace>
     </replaceStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -159,7 +175,6 @@
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/page/admin/viewArticle.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/h-ui/css/H-ui.min.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/h-ui.admin/css/H-ui.admin.css" />
-        <option value="$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/AboutController.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/AdminController.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/page/admin.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/page/admin/articleManager.jsp" />
@@ -186,6 +201,7 @@
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/page/common/nav.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/css/common.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/page/about.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/AboutController.java" />
       </list>
     </option>
   </component>
@@ -225,6 +241,7 @@
     <option name="width" value="1580" />
     <option name="height" value="907" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -264,6 +281,15 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="aftertomorrow" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="blog" type="b2602c69:ProjectViewProjectNode" />
+              <item name="blog" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="aftertomorrow" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -524,13 +550,6 @@
             <element signature="method#goToAdd#0;class#AdminController#0" />
             <element signature="method#addArticle#0;class#AdminController#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/AboutController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
@@ -892,8 +911,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/ArticleController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
-          <caret line="63" column="27" lean-forward="true" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+        <state relative-caret-position="169">
+          <caret line="71" column="6" selection-start-line="71" selection-start-column="6" selection-end-line="71" selection-end-column="6" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#findBypage#0;class#ArticleController#0" />
@@ -915,6 +934,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1890">
           <caret line="79" column="62" selection-start-line="79" selection-start-column="62" selection-end-line="79" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/aftertomorrow/controller/AboutController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
         </state>
       </provider>
     </entry>
