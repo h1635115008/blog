@@ -68,7 +68,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Cacheable(value = "result")
-    public List<SerachItem> serach(String keywords) {
+    public List<SerachItem> search(String keywords) {
         System.out.println("serach() is invoked");
         return articleDao.serach(keywords);
     }

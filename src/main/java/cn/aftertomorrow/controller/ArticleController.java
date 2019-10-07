@@ -80,14 +80,14 @@ public class ArticleController {
     }
 
 
-    @RequestMapping("/serach")
+    @RequestMapping("/search")
     @ResponseBody
-    public SerachResponse serach(String keywords) throws Exception {
+    public SerachResponse search(String keywords) throws Exception {
         SerachResponse serachResponse = new SerachResponse();
         URLDecoder urlDecoder = new URLDecoder();
         String deCode = urlDecoder.decode((keywords), "UTF-8");
         if (deCode != null && !deCode.equals("")) {
-            serachResponse.setSerachItems(articleService.serach(deCode));
+            serachResponse.setSerachItems(articleService.search(deCode));
         }
         return serachResponse;
     }

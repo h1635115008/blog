@@ -22,7 +22,7 @@ public interface ArticleService {
 
     public int size();
 
-    public List<SerachItem> serach(String keywords);
+    public List<SerachItem> search(String keywords);
 
 
     public Map<String, List<Article>> getAticleOrderByYears();

@@ -25,7 +25,7 @@ public class ArticleServiceTest {
         String xmlpath = "applicationContext.xml";
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(xmlpath);
         ArticleService articleService = (ArticleService) applicationContext.getBean("articleServiceImpl");
-        System.out.println(articleService.serach("I/O"));
+        System.out.println(articleService.search("I/O"));
 //        try {
 //            Thread.sleep(3000);
 //        } catch (InterruptedException e) {
