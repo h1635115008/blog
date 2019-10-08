@@ -75,7 +75,7 @@
 		from article
 		where status=1
 	</select>
-    <select id="serach" parameterType="String" resultType="serachItem">
+    <select id="search" parameterType="String" resultType="searchItem">
 		select id,title
         from article
         where Match(title,text) Against(concat('"',#{keywords},'"') IN BOOLEAN MODE)

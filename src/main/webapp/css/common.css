@@ -152,8 +152,11 @@ header {
 }
 
 .serachBox .serach .result .resultItem:hover {
-    color: #000000;
-    background: white;
+    background: #adadad;
+}
+
+.serachBox .serach .result .resultItem em {
+    color: yellow;
 }
 
 body {

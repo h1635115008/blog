@@ -4,7 +4,7 @@ import java.util.List;
 
 import cn.aftertomorrow.po.Article;
 import cn.aftertomorrow.po.Page;
-import cn.aftertomorrow.po.SerachItem;
+import cn.aftertomorrow.po.SearchItem;
 
 public interface ArticleDao {
     public int addArticle(Article article);
@@ -27,5 +27,5 @@ public interface ArticleDao {
 
     public int addView(Integer id);
 
-    public List<SerachItem> serach(String keywords);
+    public List<SearchItem> search(String keywords);
 }

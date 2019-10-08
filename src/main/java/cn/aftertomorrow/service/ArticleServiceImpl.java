@@ -1,10 +1,27 @@
 package cn.aftertomorrow.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
-import cn.aftertomorrow.po.SerachItem;
+import cn.aftertomorrow.po.SearchItem;
 import cn.aftertomorrow.util.Util;
 import net.sf.ehcache.CacheManager;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StoredField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -13,6 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.aftertomorrow.dao.ArticleDao;
 import cn.aftertomorrow.po.Article;
 import cn.aftertomorrow.po.Page;
+import org.wltea.analyzer.lucene.IKAnalyzer;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 @Service
 @Transactional
@@ -21,6 +42,14 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
     @Autowired
     CacheManager cacheManager;
+    private IndexWriter indexWriter;
+    private IndexReader indexReader;
+    private IndexSearcher indexSearcher;
+    Directory directory = FSDirectory.open(new File(ArticleServiceImpl.class.getClassLoader().getResource("").getPath() + "/index").toPath());
+
+    public ArticleServiceImpl() throws IOException {
+    }
+
 
     public List<Article> listAll() {
         // TODO Auto-generated method stub
@@ -68,15 +97,21 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Cacheable(value = "result")
-    public List<SerachItem> search(String keywords) {
-        System.out.println("serach() is invoked");
-        return articleDao.serach(keywords);
+    public List<SearchItem> search(String keywords) throws ParseException, IOException, InvalidTokenOffsetsException {
+        System.out.println("search() is invoked");
+        indexReader = DirectoryReader.open(directory);
+        indexSearcher = new IndexSearcher(indexReader);
+        QueryParser queryParser = new QueryParser("title", new IKAnalyzer());
+        Query query = queryParser.parse(QueryParser.escape(keywords));
+        List<SearchItem> searchItems = Util.search(query, indexSearcher);
+        indexReader.close();
+        return searchItems;
     }
 
     @Override
 //    @Cacheable(value = "result", key = "#root.methodName")
-    public Map<String, List<Article>> getAticleOrderByYears() {
-        System.out.println("getAticleOrderByYears() is invoked");
+    public Map<String, List<Article>> getArticleOrderByYears() {
+        System.out.println("getArticleOrderByYears() is invoked");
         Map<String, List<Article>> aticleOrderByYears = new TreeMap<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -93,8 +128,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
 //    @Cacheable(value = "result", key = "#root.methodName")
-    public Map<String, List<Article>> getAticleOrderByTags() {
-        System.out.println("getAticleOrderByTags() is invoked");
+    public Map<String, List<Article>> getArticleOrderByTags() {
+        System.out.println("getArticleOrderByTags() is invoked");
         Map<String, List<Article>> aticleOrderByTags = new HashMap<>();
         List<Article> articles = articleDao.listAllWithTag();
         for (Article article : articles) {
@@ -102,5 +137,28 @@ public class ArticleServiceImpl implements ArticleService {
             Util.order(aticleOrderByTags, tagName, new ArrayList(), article);
         }
         return aticleOrderByTags;
+    }
+
+    @Override
+    @PostConstruct
+    public void initIndex() throws IOException {
+        indexWriter = new IndexWriter(directory, new IndexWriterConfig(new IKAnalyzer()));
+        List<Article> articles = articleDao.listAll();
+        for (Article article : articles) {
+            Document document = new Document();
+            Field fieldId = new StoredField("id", article.getId());
+            Field fieldTitle = new TextField("title", article.getTitle(), Field.Store.YES);
+            document.add(fieldId);
+            document.add(fieldTitle);
+            indexWriter.addDocument(document);
+        }
+        indexWriter.close();
+    }
+
+    @PreDestroy
+    public void destroy() throws IOException {
+        indexWriter = new IndexWriter(directory, new IndexWriterConfig(new IKAnalyzer()));
+        indexWriter.deleteAll();
+        indexWriter.close();
     }
 }

@@ -1,6 +1,6 @@
 package cn.aftertomorrow.po;
 
-public class SerachItem {
+public class SearchItem {
     private Integer id;
     private String title;
 

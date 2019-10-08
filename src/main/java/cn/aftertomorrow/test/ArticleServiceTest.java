@@ -1,11 +1,13 @@
 package cn.aftertomorrow.test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -21,11 +23,11 @@ public class ArticleServiceTest {
     }
 
     @Test
-    public void listAllTest() {
+    public void listAllTest() throws Exception {
         String xmlpath = "applicationContext.xml";
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(xmlpath);
         ArticleService articleService = (ArticleService) applicationContext.getBean("articleServiceImpl");
-        System.out.println(articleService.search("I/O"));
+        System.out.println(articleService.search("mysql"));
 //        try {
 //            Thread.sleep(3000);
 //        } catch (InterruptedException e) {

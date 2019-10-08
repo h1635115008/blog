@@ -57,7 +57,7 @@ public class ArticleController {
     public String findByTime(Model model) throws Exception {
         // TODO Auto-generated method stub
         System.out.println("跳转归档");
-        model.addAttribute("aticleOrderByYears", articleService.getAticleOrderByYears());
+        model.addAttribute("aticleOrderByYears", articleService.getArticleOrderByYears());
         return "file";
     }
 
@@ -65,7 +65,7 @@ public class ArticleController {
     public String findByTag(Model model) throws Exception {
         // TODO Auto-generated method stub
         System.out.println("跳转标签");
-        model.addAttribute("aticleOrderByTags", articleService.getAticleOrderByTags());
+        model.addAttribute("aticleOrderByTags", articleService.getArticleOrderByTags());
         return "tag";
     }
 
@@ -87,7 +87,7 @@ public class ArticleController {
         URLDecoder urlDecoder = new URLDecoder();
         String deCode = urlDecoder.decode((keywords), "UTF-8");
         if (deCode != null && !deCode.equals("")) {
-            serachResponse.setSerachItems(articleService.search(deCode));
+            serachResponse.setSearchItems(articleService.search(deCode));
         }
         return serachResponse;
     }

@@ -37,15 +37,15 @@ function serach(e, url) {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     var response = JSON.parse(xmlhttp.responseText);
                     var str = "";
-                    for (var i = 0; i < response.serachItems.length; i++) {
-                        console.log(response.serachItems[i])
-                        str += "<a class='resultItem' title = '" + response.serachItems[i].title + "'href='" + url + "/text/" + response.serachItems[i].id + "'>" + response.serachItems[i].title + "</a>"
+                    for (var i = 0; i < response.searchItems.length; i++) {
+                        console.log(response.searchItems[i])
+                        str += "<a class='resultItem' title = '" + response.searchItems[i].title.replace(/<.*?>/g, "") + "'href='" + url + "/text/" + response.searchItems[i].id + "'>" + response.searchItems[i].title + "</a>"
                     }
                     result.innerHTML = str;
                 }
             }
             console.log(e.value);
-            xmlhttp.open("POST", url + "/serach", true);
+            xmlhttp.open("POST", url + "/search", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
             xmlhttp.send("keywords=" + encodeURIComponent(encodeURIComponent(e.value)));
         }, 300);
