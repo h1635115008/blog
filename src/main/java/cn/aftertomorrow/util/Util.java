@@ -7,10 +7,13 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.highlight.*;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,5 +96,9 @@ public class Util {
             searchItems.add(searchItem);
         }
         return searchItems;
+    }
+
+    public static Directory articleIndexDirectory() throws IOException {
+        return FSDirectory.open(new File(Util.class.getClassLoader().getResource("").getPath() + "/index").toPath());
     }
 }

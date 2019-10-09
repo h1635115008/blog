@@ -1,6 +1,5 @@
 package cn.aftertomorrow.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,8 +19,6 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -42,14 +39,11 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
     @Autowired
     CacheManager cacheManager;
-    private IndexWriter indexWriter;
-    private IndexReader indexReader;
-    private IndexSearcher indexSearcher;
-    Directory directory = FSDirectory.open(new File(ArticleServiceImpl.class.getClassLoader().getResource("").getPath() + "/index").toPath());
+    IndexReader indexReader = DirectoryReader.open(Util.articleIndexDirectory());
+    IndexSearcher indexSearcher = new IndexSearcher(indexReader);
 
     public ArticleServiceImpl() throws IOException {
     }
-
 
     public List<Article> listAll() {
         // TODO Auto-generated method stub
@@ -99,12 +93,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Cacheable(value = "result")
     public List<SearchItem> search(String keywords) throws ParseException, IOException, InvalidTokenOffsetsException {
         System.out.println("search() is invoked");
-        indexReader = DirectoryReader.open(directory);
-        indexSearcher = new IndexSearcher(indexReader);
         QueryParser queryParser = new QueryParser("title", new IKAnalyzer());
         Query query = queryParser.parse(QueryParser.escape(keywords));
         List<SearchItem> searchItems = Util.search(query, indexSearcher);
-        indexReader.close();
         return searchItems;
     }
 
@@ -142,7 +133,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @PostConstruct
     public void initIndex() throws IOException {
-        indexWriter = new IndexWriter(directory, new IndexWriterConfig(new IKAnalyzer()));
+        IndexWriter indexWriter = new IndexWriter(Util.articleIndexDirectory(), new IndexWriterConfig(new IKAnalyzer()));
         List<Article> articles = articleDao.listAll();
         for (Article article : articles) {
             Document document = new Document();
@@ -157,8 +148,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @PreDestroy
     public void destroy() throws IOException {
-        indexWriter = new IndexWriter(directory, new IndexWriterConfig(new IKAnalyzer()));
+        IndexWriter indexWriter = new IndexWriter(Util.articleIndexDirectory(), new IndexWriterConfig(new IKAnalyzer()));
         indexWriter.deleteAll();
         indexWriter.close();
+        indexReader.close();
     }
 }
