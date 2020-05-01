@@ -3,6 +3,7 @@ package cn.aftertomorrow.service;
 import java.io.IOException;
 import java.util.*;
 
+import cn.aftertomorrow.exception.InsertException;
 import cn.aftertomorrow.po.SearchItem;
 import cn.aftertomorrow.util.Util;
 import net.sf.ehcache.CacheManager;
@@ -19,6 +20,8 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -35,34 +38,28 @@ import javax.annotation.PreDestroy;
 @Service
 @Transactional
 public class ArticleServiceImpl implements ArticleService {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
     @Autowired
     private ArticleDao articleDao;
     @Autowired
     CacheManager cacheManager;
-    IndexReader indexReader = DirectoryReader.open(Util.articleIndexDirectory());
-    IndexSearcher indexSearcher = new IndexSearcher(indexReader);
-
-    public ArticleServiceImpl() throws IOException {
-    }
+    IndexReader indexReader;
+    IndexSearcher indexSearcher;
 
     public List<Article> listAll() {
-        // TODO Auto-generated method stub
         return this.articleDao.listAll();
     }
 
     public Article findArticleById(Integer id) {
-        // TODO Auto-generated method stub
         articleDao.addView(id);
         return this.articleDao.findArticleById(id);
     }
 
     public List<Article> findByPage(Page page) {
-        // TODO Auto-generated method stub
         return this.articleDao.findByPage(page);
     }
 
     public int addArticle(Article article) {
-        // TODO Auto-generated method stub
         if (Util.notEmpty(article.getTag(), article.getSummary(), article.getTitle())) {
             article.setTime(new Date());
             return articleDao.addArticle(article);
@@ -85,14 +82,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Cacheable(value = "result", key = "#root.methodName")
     public int size() {
-        System.out.println("size() is invoked");
+        logger.info("size() is invoked");
         return articleDao.size();
     }
 
     @Override
     @Cacheable(value = "result")
     public List<SearchItem> search(String keywords) throws ParseException, IOException, InvalidTokenOffsetsException {
-        System.out.println("search() is invoked");
+        logger.info("search() is invoked");
         QueryParser queryParser = new QueryParser("title", new IKAnalyzer());
         Query query = queryParser.parse(QueryParser.escape(keywords));
         List<SearchItem> searchItems = Util.search(query, indexSearcher);
@@ -100,9 +97,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-//    @Cacheable(value = "result", key = "#root.methodName")
     public Map<String, List<Article>> getArticleOrderByYears() {
-        System.out.println("getArticleOrderByYears() is invoked");
+        logger.info("getArticleOrderByYears() is invoked");
         Map<String, List<Article>> aticleOrderByYears = new TreeMap<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -118,9 +114,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-//    @Cacheable(value = "result", key = "#root.methodName")
     public Map<String, List<Article>> getArticleOrderByTags() {
-        System.out.println("getArticleOrderByTags() is invoked");
+        logger.info("getArticleOrderByTags() is invoked");
         Map<String, List<Article>> aticleOrderByTags = new HashMap<>();
         List<Article> articles = articleDao.listAllWithTag();
         for (Article article : articles) {
@@ -144,6 +139,8 @@ public class ArticleServiceImpl implements ArticleService {
             indexWriter.addDocument(document);
         }
         indexWriter.close();
+        indexReader = DirectoryReader.open(Util.articleIndexDirectory());
+        indexSearcher = new IndexSearcher(indexReader);
     }
 
     @PreDestroy

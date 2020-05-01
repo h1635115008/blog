@@ -16,12 +16,10 @@ public class MessageReplyServiceImpl implements MessageReplyService {
 	private MessageReplyDao messageReplyDao;
 
 	public int addMessageReply(MessageReply messageReply) {
-		// TODO Auto-generated method stub
 		return this.messageReplyDao.addMessageReply(messageReply);
 	}
 
 	public List<MessageReply> findByGuestmessage_id(Integer guestmessage_id) {
-		// TODO Auto-generated method stub
 		return this.messageReplyDao.findByGuestmessage_id(guestmessage_id);
 	}
 

@@ -1,10 +1,13 @@
 package cn.aftertomorrow.controller;
 
+import cn.aftertomorrow.listener.InitComponent;
 import cn.aftertomorrow.po.Article;
 import cn.aftertomorrow.po.GuestMessage;
 import cn.aftertomorrow.service.ArticleService;
 import cn.aftertomorrow.service.GuestMessageService;
 import cn.aftertomorrow.service.TagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,8 @@ import java.util.*;
 
 @Controller
 public class AdminController {
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     @Autowired
     private ArticleService articleService;
     @Autowired
@@ -48,8 +53,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/addArticle", method = RequestMethod.GET)
     public String goToAdd(Model model) throws Exception {
-        // TODO Auto-generated method stub
-        System.out.println("跳转写博客");
+        logger.info("跳转写博客");
         model.addAttribute("tagOrderByKinds", tagService.getTagOrderByKinds());
         return "admin/addArticle";
     }
@@ -57,8 +61,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/addArticle", method = RequestMethod.POST)
     @ResponseBody
     public Object addArticle(Article article) throws Exception {
-        // TODO Auto-generated method stub
-        System.out.println("添加文章");
+        logger.info("添加文章");
         Map<String, String> map = new HashMap<String, String>();
         if (articleService.addArticle(article) > 0) {
             map.put("msg", "success");
@@ -71,10 +74,9 @@ public class AdminController {
     @RequestMapping("/admin/deleteArticle")
     @ResponseBody
     public Object deleteArticle(@RequestParam(name = "ids[]") Integer[] ids) throws Exception {
-        // TODO Auto-generated method stub
-        System.out.println("删除文章");
-        System.out.println(Arrays.toString(ids));
-        Map<String, String> map = new HashMap<String, String>();
+        logger.info("删除文章");
+        logger.info(Arrays.toString(ids));
+        Map<String, String> map = new HashMap<>();
         if (articleService.deleteArticle(ids) > 0) {
             map.put("msg", "success");
         } else {
@@ -94,7 +96,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/editArticle", method = RequestMethod.POST)
     @ResponseBody
     public Object editArticle(Article article) {
-        System.out.println(article);
+        logger.info(article.toString());
         Map<String, String> map = new HashMap<>();
         if (articleService.editArticle(article) > 0) {
             map.put("msg", "success");

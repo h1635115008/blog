@@ -14,7 +14,7 @@
     </listener>
     <!--自定义监听器-->
     <listener>
-        <listener-class>cn.aftertomorrow.listener.InitComponet</listener-class>
+        <listener-class>cn.aftertomorrow.listener.InitComponent</listener-class>
     </listener>
     <!--编码过滤器-->
     <filter>

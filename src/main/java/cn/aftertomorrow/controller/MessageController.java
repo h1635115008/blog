@@ -23,7 +23,6 @@ public class MessageController {
 
     @RequestMapping("/message")
     public String findBypage(Model model) throws Exception {
-        // TODO Auto-generated method stub
         List<GuestMessage> guestMessages = guestMessageService.listAll();
         System.out.println(guestMessages);
         model.addAttribute("guestMessages", guestMessages);
@@ -32,7 +31,6 @@ public class MessageController {
 
     @RequestMapping("/addMessage")
     public String addMessage(GuestMessage guestMessage) throws Exception {
-        // TODO Auto-generated method stub
         System.out.println("addMessage");
         guestMessage.setName(Util.XSSFilter(guestMessage.getName()));
         guestMessage.setEmail(Util.XSSFilter(guestMessage.getEmail()));

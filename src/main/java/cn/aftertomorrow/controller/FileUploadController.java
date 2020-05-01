@@ -17,10 +17,10 @@ public class FileUploadController {
 
     @RequestMapping("upload")
     @ResponseBody
-    public ImageResponse handleFormUpload(@RequestParam("upload_file") MultipartFile uploadfile, HttpServletRequest request) {
+    public ImageResponse handleFormUpload(@RequestParam("upload_file") MultipartFile uploadFile, HttpServletRequest request) {
         ImageResponse imageResponse = new ImageResponse();
-        if (uploadfile != null) {
-            String originalFilename = uploadfile.getOriginalFilename();
+        if (uploadFile != null) {
+            String originalFilename = uploadFile.getOriginalFilename();
             String format = originalFilename.substring(originalFilename.lastIndexOf("."));
             String dirPath = request.getServletContext().getRealPath("/img/");
             File file = new File(dirPath);
@@ -29,7 +29,7 @@ public class FileUploadController {
             }
             String fileName = UUID.randomUUID() + format;
             try {
-                uploadfile.transferTo(new File(dirPath + fileName));
+                uploadFile.transferTo(new File(dirPath + fileName));
                 imageResponse.setSuccess("true");
                 imageResponse.setFile_path(request.getContextPath() + "/img/" + fileName);
             } catch (IOException e) {

@@ -16,12 +16,10 @@ public class GuestMessageServiceImpl implements GuestMessageService {
 	private GuestMessageDao guestMessageDao;
 
 	public int addGuestMessage(GuestMessage guestMessage) {
-		// TODO Auto-generated method stub
 		return this.guestMessageDao.addGuestMessage(guestMessage);
 	}
 
 	public List<GuestMessage> listAll() {
-		// TODO Auto-generated method stub
 		return this.guestMessageDao.listAll();
 	}
 

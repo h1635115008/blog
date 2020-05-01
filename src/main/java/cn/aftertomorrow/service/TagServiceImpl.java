@@ -21,7 +21,6 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> listAll() {
-        // TODO Auto-generated method stub
         return tagDao.listAll();
     }
 
