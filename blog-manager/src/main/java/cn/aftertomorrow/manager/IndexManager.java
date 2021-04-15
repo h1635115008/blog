@@ -41,7 +41,7 @@ public class IndexManager {
 
     private IndexSearcher indexSearcher;
 
-    private static String INDEX_PATH = "C:\\Users\\ideapad\\workspace\\lucene\\index";
+    private static String INDEX_PATH = "C:\\Users\\Administrator\\Desktop\\huangming\\lucene";
 
     private static IndexWriter indexWriter;
 
