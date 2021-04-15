@@ -5,6 +5,7 @@
         <artifactId>blog-parent</artifactId>
         <groupId>cn.aftertomorrow</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>./blog-parent</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
