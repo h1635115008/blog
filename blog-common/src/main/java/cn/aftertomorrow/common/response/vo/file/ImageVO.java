@@ -1,6 +1,7 @@
 package cn.aftertomorrow.common.response.vo.file;
 
 import cn.aftertomorrow.common.response.vo.BaseVO;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -11,5 +12,7 @@ import lombok.Data;
  */
 @Data
 public class ImageVO extends BaseVO {
-    private String filePath;
+    private String file_path;
+    private Boolean success;
+    private String msg;
 }
