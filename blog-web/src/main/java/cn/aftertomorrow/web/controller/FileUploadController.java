@@ -1,8 +1,8 @@
 package cn.aftertomorrow.web.controller;
 
-import cn.aftertomorrow.common.response.Result;
 import cn.aftertomorrow.common.response.vo.file.ImageVO;
-import cn.aftertomorrow.common.util.ResultUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,12 +14,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * 文件上传控制类
+ *
+ * @author huangming
+ * @date 2019/09/26
+ */
 @Controller
 public class FileUploadController {
+    private final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     @RequestMapping("upload/image")
     @ResponseBody
-    public Result<ImageVO> handleFormUploadImage(@RequestParam("upload_file") MultipartFile uploadFile, HttpServletRequest request) {
+    public ImageVO handleFormUploadImage(@RequestParam("upload_file") MultipartFile uploadFile, HttpServletRequest request) {
         ImageVO imageVO = new ImageVO();
         if (uploadFile != null) {
             String originalFilename = uploadFile.getOriginalFilename();
@@ -32,11 +39,17 @@ public class FileUploadController {
             String fileName = UUID.randomUUID() + format;
             try {
                 uploadFile.transferTo(new File(dirPath + fileName));
-                imageVO.setFilePath(request.getContextPath() + "/img/" + fileName);
+                imageVO.setFile_path(request.getContextPath() + "/img/" + fileName);
             } catch (IOException e) {
-                throw new RuntimeException("上传失败", e);
+                logger.error("上传失败", e);
+                imageVO.setMsg("上传失败");
+                imageVO.setSuccess(false);
+                return imageVO;
             }
         }
-        return ResultUtils.createSuccessResult(imageVO);
+        imageVO.setMsg("上传成功");
+        imageVO.setSuccess(true);
+        return imageVO;
+
     }
 }
