@@ -2,6 +2,7 @@ package cn.aftertomorrow.web.controller;
 
 import cn.aftertomorrow.common.request.dto.user.UserDTO;
 import cn.aftertomorrow.service.UserService;
+import cn.hutool.core.util.ObjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 用户管理控制类
+ *
+ * @author huangming
+ * @date 2019/09/26
+ */
 @Controller
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
@@ -30,8 +37,12 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(UserDTO user, HttpSession session, HttpServletRequest request, Model model) {
         UserDTO realUser = userService.findUserByName(user.getUsername());
+        if (ObjectUtil.isEmpty(realUser)) {
+            model.addAttribute("message", "^_^用户不存在，请重新输入");
+            return "login";
+        }
         String path = request.getHeader("Referer").replace(request.getHeader("Origin"), "");
-        if (null != realUser && realUser.getPassword().equals(user.getPassword())) {
+        if (null != realUser && user.getPassword().equals(realUser.getPassword())) {
             session.setAttribute("user", realUser);
             if (path.indexOf("/login") >= 0) {
                 return "redirect:admin";
@@ -39,7 +50,7 @@ public class UserController {
                 return "redirect:" + path;
             }
         }
-        model.addAttribute("message", "^_^用户名或密码错误请重新输入");
+        model.addAttribute("message", "^_^密码错误，请重新输入");
         return "login";
     }
 
