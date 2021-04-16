@@ -22,6 +22,7 @@
         <lucene.version>8.2.0</lucene.version>
         <jackson.verison>2.9.8</jackson.verison>
         <pagehelper.version>5.2.0</pagehelper.version>
+        <hutool.version>5.6.3</hutool.version>
     </properties>
 
 
@@ -176,12 +177,6 @@
                 <artifactId>logback-classic</artifactId>
                 <version>1.2.3</version>
             </dependency>
-            <!-- 引入log4 -->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.17</version>
-            </dependency>
             <!-- 引入SLF4J -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -198,19 +193,19 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
+                <version>${jackson.verison}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
+                <version>${jackson.verison}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
+                <version>${jackson.verison}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
             <dependency>
@@ -284,6 +279,12 @@
                         <artifactId>logback-classic</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <!--引入hutool工具包-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
             <!--blog-common-->
             <dependency>

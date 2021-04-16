@@ -90,6 +90,11 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
         </dependency>
+        <!--引入hutool工具包-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+        </dependency>
         <!--blog-dao-->
         <dependency>
             <groupId>cn.aftertomorrow</groupId>
