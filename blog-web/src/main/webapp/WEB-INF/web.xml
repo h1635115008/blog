@@ -13,9 +13,9 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <!--自定义监听器-->
-<!--    <listener>-->
-<!--        <listener-class>cn.aftertomorrow.listener.InitComponent</listener-class>-->
-<!--    </listener>-->
+    <listener>
+        <listener-class>cn.aftertomorrow.web.listener.InitComponent</listener-class>
+    </listener>
     <!--编码过滤器-->
     <filter>
         <filter-name>encoding</filter-name>
