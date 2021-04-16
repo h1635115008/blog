@@ -203,7 +203,7 @@
                 dataType: 'json',
                 data: "id=" + id + "&status=1",
                 success: function (data) {
-                    if (data.msg == "success") {
+                    if (data.success == true) {
                         $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
                         $(obj).remove();
                         layer.msg('已发布!', {icon: 6, time: 1000});

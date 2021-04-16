@@ -109,12 +109,12 @@
 <div class="main">
     <div class="content">
         <div class="tags">
-            <c:forEach items="${requestScope.aticleOrderByTags.keySet()}" var="tag">
+            <c:forEach items="${requestScope.articleCollectionByTag.keySet()}" var="tag">
                 <div class="tagBox">
-                    <div class="tag_ iconfont">${requestScope.aticleOrderByTags[tag][0].unicode}
+                    <div class="tag_ iconfont">${requestScope.articleCollectionByTag[tag][0].unicode}
                             ${tag}</div>
                 </div>
-                <c:forEach items="${requestScope.aticleOrderByTags.get(tag)}" var="article">
+                <c:forEach items="${requestScope.articleCollectionByTag.get(tag)}" var="article">
                     <a class="tagItem"
                        href="${pageContext.request.contextPath }/text/${article.id}">
                         <div class="date"><fmt:formatDate pattern="yy-MM-dd" value="${article.time}"/>

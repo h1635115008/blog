@@ -119,13 +119,13 @@
 <div class="main">
     <div class="content">
         <div class="fileBox">
-            <c:forEach items="${requestScope.aticleOrderByYears.keySet()}" var="year">
+            <c:forEach items="${requestScope.articleCollectionByYear.keySet()}" var="year">
                 <div class="yearBox">
                     <div class="year">
                             ${year}
                     </div>
                 </div>
-                <c:forEach items="${requestScope.aticleOrderByYears.get(year)}" var="article">
+                <c:forEach items="${requestScope.articleCollectionByYear.get(year)}" var="article">
                     <a class="fileItem"
                        href="${pageContext.request.contextPath }/text/${article.id}">
                         <div class="date">

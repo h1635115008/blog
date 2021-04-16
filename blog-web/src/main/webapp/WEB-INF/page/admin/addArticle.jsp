@@ -71,9 +71,9 @@
             <label class="form-label col-xs-4 col-sm-2">标签分类：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <select class="tag" multiple="multiple" id="tag" name="tag">
-                    <c:forEach var="kind" items="${requestScope.tagOrderByKinds.keySet()}">
+                    <c:forEach var="kind" items="${requestScope.tagCollectionByKind.keySet()}">
                         <optgroup label="${kind}">
-                            <c:forEach var="tag" items="${requestScope.tagOrderByKinds[kind]}">
+                            <c:forEach var="tag" items="${requestScope.tagCollectionByKind[kind]}">
                                 <option value="${tag.name}">${tag.name}
                                 </option>
                             </c:forEach>
@@ -170,12 +170,12 @@
                 url: '${pageContext.request.contextPath}/admin/addArticle',
                 dataType: 'json',
                 data: $('#form-article-add').serialize() + "&status=" + status,
-                success: function (data) {
-                    console.log(data);
-                    if (data.msg == "success") {
-                        layer.msg('已保存!', {icon: 1, time: 1000});
+                success: function (result) {
+                    console.log(result);
+                    if (result.success == true) {
+                        layer.msg(result.msg+'!', {icon: 1, time: 1000});
                     } else {
-                        layer.msg('保存失败!', {icon: 2, time: 1000});
+                        layer.msg(result.msg+'!', {icon: 2, time: 1000});
                     }
                 },
                 error: function (data) {
@@ -207,7 +207,7 @@
             fileKey: 'upload_file',
             defaultImage: '${pageContext.request.contextPath }/img/about.png',
             upload: {
-                url: '${pageContext.request.contextPath }/upload'
+                url: '${pageContext.request.contextPath }/upload/image'
             }
         });
     });
