@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.aftertomorrow.service.ArticleService;
-import cn.aftertomorrow.service.TagService;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * 文章控制类
@@ -33,17 +34,15 @@ public class ArticleController {
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     @Autowired
     private ArticleService articleService;
-    @Autowired
-    private TagService tagService;
 
     @RequestMapping(value = "/page/{pageNum}", method = RequestMethod.GET)
-    public String findByPageSize(@PathVariable Integer pageNum, Model model) throws Exception {
+    public String findByPage(@PathVariable Integer pageNum, Model model) throws Exception {
         logger.info("跳转主页");
         if (pageNum == null) {
             pageNum = 1;
         }
         PageInfo<ArticleDTO> pageInfo = articleService.findByPage(pageNum, 8);
-        model.addAttribute("articles", POJOUtils.copyPropertiesToList(pageInfo.getList(), ArticleVO.class));
+        model.addAttribute("articles", pageInfo.getList());
         model.addAttribute("maxPage", pageInfo.getPages());
         model.addAttribute("path", "page");
         model.addAttribute("page", pageNum);
@@ -58,25 +57,32 @@ public class ArticleController {
     @RequestMapping("/file")
     public String findByTime(Model model) throws Exception {
         logger.info("跳转归档");
-        model.addAttribute("aticleOrderByYears", articleService.getArticleCollectionByYear());
+        model.addAttribute("articleCollectionByYear", articleService.getArticleCollectionByYear());
         return "file";
     }
 
     @RequestMapping("/tag")
     public String findByTag(Model model) throws Exception {
         logger.info("跳转标签");
-        model.addAttribute("aticleOrderByTags", articleService.getArticleCollectionByTag());
+        model.addAttribute("articleCollectionByTag", articleService.getArticleCollectionByTag());
         return "tag";
     }
 
     @RequestMapping(value = "/text/{id}", method = RequestMethod.GET)
-    public String findById(@PathVariable Integer id, Model model) throws Exception {
+    public String findById(@PathVariable Integer id, Model model, HttpSession session) throws Exception {
         logger.info("跳转全文");
-        ArticleDTO articleDTO = articleService.findArticleById(id);
+        Boolean isAddView;
+        if (Boolean.TRUE.equals(session.getAttribute("text#" + id))) {
+            isAddView = false;
+        } else {
+            session.setAttribute("text#" + id, true);
+            isAddView = true;
+        }
+        ArticleDTO articleDTO = articleService.findArticleById(id, isAddView);
         if (articleDTO == null) {
             throw new NullPointerException();
         }
-        model.addAttribute("article", POJOUtils.copyPropertiesToObject(articleDTO, ArticleVO.class));
+        model.addAttribute("article", articleDTO);
         return "text";
     }
 

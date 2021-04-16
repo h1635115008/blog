@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.aftertomorrow.common.request.dto.article.ArticleDTO;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * 文章服务类接口
@@ -45,12 +46,20 @@ public interface ArticleService {
     List<ArticleDTO> listAll();
 
     /**
+     * 通过状态获取全部文章
+     *
+     * @return
+     */
+    List<ArticleDTO> listAllWithStatus();
+
+    /**
      * 通过文章id获取文章
      *
      * @param id
+     * @param isAddView 是否增加阅读量
      * @return
      */
-    ArticleDTO findArticleById(Integer id);
+    ArticleDTO findArticleById(Integer id, Boolean isAddView);
 
     /**
      * 分页查找

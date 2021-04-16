@@ -10,6 +10,7 @@ import cn.aftertomorrow.dao.domain.Article;
 import cn.aftertomorrow.dao.mapper.ArticleMapper;
 import cn.aftertomorrow.manager.IndexManager;
 import cn.aftertomorrow.service.ArticleService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.ehcache.CacheManager;
@@ -50,16 +51,21 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDTO findArticleById(Integer id) {
+    public ArticleDTO findArticleById(Integer id, Boolean isAddView) {
+        if (isAddView) {
+            articleMapper.addArticleViewCount(id);
+        }
         Article article = articleMapper.findArticleById(id);
         return POJOUtils.copyPropertiesToObject(article, ArticleDTO.class);
     }
 
     @Override
     public PageInfo<ArticleDTO> findByPage(Integer pageNum, Integer size) {
-        PageHelper.startPage(pageNum, size);
-        List<ArticleDTO> articleDTOList = POJOUtils.copyPropertiesToList(articleMapper.listAll(), ArticleDTO.class);
-        return new PageInfo(articleDTOList);
+        Page<ArticleDTO> page = PageHelper.startPage(pageNum, size);
+
+        articleMapper.listAllWithStatus();
+
+        return new PageInfo<>(page);
     }
 
     @Override
@@ -134,4 +140,8 @@ public class ArticleServiceImpl implements ArticleService {
         return articleCollection;
     }
 
+    @Override
+    public List<ArticleDTO> listAllWithStatus() {
+        return POJOUtils.copyPropertiesToList(articleMapper.listAllWithStatus(), ArticleDTO.class);
+    }
 }

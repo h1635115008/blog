@@ -63,13 +63,6 @@
 		where a.tag like concat("%",t.name,"%") and status=1
 		order by id desc
 	</select>
-    <select id="findByPage" parameterType="page" resultType="article">
-		select *
-		from article
-		where status=1
-		order by id desc
-		limit #{start},#{size}
-	</select>
     <select id="getArticleSize" resultType="int">
 		select count(1)
 		from article
