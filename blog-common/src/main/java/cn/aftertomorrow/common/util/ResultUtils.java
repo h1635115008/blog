@@ -17,12 +17,20 @@ public class ResultUtils {
      * @param <T>
      * @return
      */
-    public static <T> Result createSuccessResult(T data) {
-        return Result.builder()
+    public static <T> Result<T> createSuccessResult(T data) {
+        return Result.<T>builder()
                 .code(ResultCodeEnums.SUCCESS.getCode())
                 .msg(ResultCodeEnums.SUCCESS.getDesc())
                 .data(data)
                 .success(true)
+                .build();
+    }
+
+    public static <T> Result<T> createFailResult(ResultCodeEnums resultCode, String msg) {
+        return Result.<T>builder()
+                .code(resultCode.getCode())
+                .msg(msg)
+                .success(false)
                 .build();
     }
 }

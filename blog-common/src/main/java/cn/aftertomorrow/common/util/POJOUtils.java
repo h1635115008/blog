@@ -30,6 +30,7 @@ public class POJOUtils {
             try {
                 T target = targetClass.newInstance();
                 BeanUtils.copyProperties(target, e);
+                targetList.add(target);
             } catch (InstantiationException e1) {
                 e1.printStackTrace();
             } catch (IllegalAccessException e1) {
