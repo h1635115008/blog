@@ -21,7 +21,7 @@ public class StringUtils {
      */
     public static boolean notEmpty(String... args) {
         for (String arg : args) {
-            if (arg == null || arg.equals("")) {
+            if (arg == null || "".equals(arg)) {
                 return false;
             }
         }
