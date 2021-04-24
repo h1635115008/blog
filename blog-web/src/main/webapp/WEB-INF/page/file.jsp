@@ -129,7 +129,7 @@
                     <a class="fileItem"
                        href="${pageContext.request.contextPath }/text/${article.id}">
                         <div class="date">
-                            <fmt:formatDate pattern="MM-dd" value="${article.time}"/>
+                           ${article.time}
                         </div>
                         <div class="title">
                                 ${article.title}

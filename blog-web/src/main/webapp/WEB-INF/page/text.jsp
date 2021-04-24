@@ -90,7 +90,7 @@
                     &#xe6b1; 标签：${article.tag.replaceAll(",", " ")}
                 </div>
                 <div class="time iconfonts">
-                    &#xe649; 创建时间：<fmt:formatDate pattern="yyyy-MM-dd" value="${article.time}"/>
+                    &#xe649; 创建时间：${article.time}
                 </div>
             </div>
         </div>

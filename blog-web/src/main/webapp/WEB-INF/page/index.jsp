@@ -33,7 +33,6 @@
             width: 99%;
             color: #000000;
             padding: 1px;
-            margin-bottom: 20px;
             border-radius: 5px;
             margin: 15px auto;
             background: #fff;
@@ -53,7 +52,7 @@
             text-align: center;
             line-height: 30px;
             padding: 0 15px;
-            margin: 10px 0 0px -3px;
+            margin: 10px 0 0 -3px;
             font-size: 13px;
             color: white;
         }
@@ -86,7 +85,7 @@
             text-align: center;
             border-radius: 5px;
             background: #8a8a8a;
-            margin: 15px 10px 0px 10px;
+            margin: 15px 10px 0 10px;
             display: block;
             color: white;
             text-decoration: none;
@@ -201,7 +200,7 @@
                     </div>
                     <div class="time iconfonts">
                         &#xe649; 创建时间：
-                        <fmt:formatDate pattern="yyyy-MM-dd" value="${article.time}"/>
+                        ${article.time}
                     </div>
                 </div>
             </div>
