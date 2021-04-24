@@ -61,7 +61,7 @@
                     <td>${message.name}</td>
                     <td>${message.email}</td>
                     <td>${message.words}</td>
-                    <td><fmt:formatDate pattern="yyyy-MM-dd" value="${message.time}"/></td>
+                    <td>${message.time}</td>
                     <td class="f-14 td-manage">
                         <a style="text-decoration:none" class="ml-5" onClick="message_del(this,'${message.id}')"
                            href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>

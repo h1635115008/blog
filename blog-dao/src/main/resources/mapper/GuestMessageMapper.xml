@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.aftertomorrow.dao.mapper.GuestMessageMapper">
+    <insert id="addGuestMessage" parameterType="guestMessageDO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into guest_message(name, email, words, parent_id)
+        values (#{name}, #{email}, #{words}, #{parentId})
+    </insert>
+    <select id="listAll" resultType="guestMessageDO">
+        select *
+        from guest_message
+    </select>
+    <select id="findGuestMessageById" resultType="guestMessageDO">
+        select *
+        from guest_message
+        where id = #{id}
+    </select>
+</mapper>

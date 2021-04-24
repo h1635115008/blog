@@ -17,5 +17,8 @@ public class GuestMessageDTO extends BaseDTO {
     private String name;
     private String email;
     private String words;
-    private Date time;
+    private Integer parentId;
+    private Integer rootNodeId;
+    private String parentUserName;
+    private String time;
 }

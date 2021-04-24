@@ -1,63 +1,57 @@
-//package cn.aftertomorrow.web.controller;
-//
-//import java.util.Date;
-//import java.util.List;
-//
-//import cn.aftertomorrow.util.Util;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//
-//import cn.aftertomorrow.po.GuestMessage;
-//import cn.aftertomorrow.po.MessageReply;
-//import cn.aftertomorrow.service.GuestMessageService;
-//import cn.aftertomorrow.service.MessageReplyService;
-//
-//@Controller
-//public class MessageController {
-//    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
-//    @Autowired
-//    private GuestMessageService guestMessageService;
-//    @Autowired
-//    private MessageReplyService messageReplyService;
-//
-//    @RequestMapping("/message")
-//    public String findBypage(Model model) throws Exception {
-//        List<GuestMessage> guestMessages = guestMessageService.listAll();
-//        logger.info(guestMessages.toString());
-//        model.addAttribute("guestMessages", guestMessages);
-//        return "message";
-//    }
-//
-//    @RequestMapping("/addMessage")
-//    public String addMessage(GuestMessage guestMessage) throws Exception {
-//        logger.info("addMessage");
-//        guestMessage.setName(Util.XSSFilter(guestMessage.getName()));
-//        guestMessage.setEmail(Util.XSSFilter(guestMessage.getEmail()));
-//        guestMessage.setWords(Util.XSSFilter(guestMessage.getWords()));
-//        String words = guestMessage.getWords();
-//        if (!words.startsWith(">> F")) {
-//            guestMessage.setTime(new Date());
-//            if (words != null && !words.equals("")) {
-//                guestMessageService.addGuestMessage(guestMessage);
-//            }
-//        } else {
-//            MessageReply messageReply = new MessageReply();
-//            messageReply.setTime(new Date());
-//            messageReply.setEmail(guestMessage.getEmail());
-//            messageReply.setName(guestMessage.getName());
-//            Integer guestMessage_id = Integer.parseInt(words.split(" ")[1].replaceFirst("F", ""));
-//            messageReply.setGuestmessage_id(guestMessage_id.intValue());
-//            words = words.replaceFirst(">> F" + guestMessage_id, "");
-//            if (!words.equals("")) {
-//                messageReply.setWords(words);
-//                logger.info(messageReply.toString());
-//                messageReplyService.addMessageReply(messageReply);
-//            }
-//        }
-//        return "redirect:message";
-//    }
-//}
+package cn.aftertomorrow.web.controller;
+
+import cn.aftertomorrow.common.enumeration.ResultCodeEnums;
+import cn.aftertomorrow.common.request.dto.message.GuestMessageDTO;
+import cn.aftertomorrow.common.response.Result;
+import cn.aftertomorrow.common.response.vo.message.GuestMessageVO;
+import cn.aftertomorrow.common.util.JavaBeanUtils;
+import cn.aftertomorrow.common.util.ResultUtils;
+import cn.aftertomorrow.common.util.SecurityUtils;
+import cn.aftertomorrow.common.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import cn.aftertomorrow.service.GuestMessageService;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+
+/**
+ * 留言处理类
+ *
+ * @author huangming
+ * @date 2019/09/26
+ */
+@Controller
+@RequestMapping("message")
+public class MessageController {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    @Autowired
+    private GuestMessageService guestMessageService;
+
+
+    @RequestMapping("")
+    public String viewMessage(Model model) {
+        List<GuestMessageDTO> guestMessages = guestMessageService.listAll();
+        model.addAttribute("guestMessages", guestMessages);
+        return "message";
+    }
+
+    @RequestMapping("/addMessage")
+    @ResponseBody
+    public Result<GuestMessageVO> addMessage(GuestMessageDTO guestMessage) {
+        if (!StringUtils.notEmpty(guestMessage.getName(), guestMessage.getEmail(), guestMessage.getWords())) {
+            return ResultUtils.createFailResult(ResultCodeEnums.ARGS_ERROR, "用户名、邮箱和内容不能为空，或者存在非法内容");
+        }
+        // 过滤XSS攻击代码
+        guestMessage.setName(SecurityUtils.XSSFilter(guestMessage.getName()));
+        guestMessage.setEmail(SecurityUtils.XSSFilter(guestMessage.getEmail()));
+        guestMessage.setWords(SecurityUtils.XSSFilter(guestMessage.getWords()));
+
+        return ResultUtils.createSuccessResult(JavaBeanUtils.copyPropertiesToObject(guestMessageService.addGuestMessage(guestMessage), GuestMessageVO.class));
+    }
+}

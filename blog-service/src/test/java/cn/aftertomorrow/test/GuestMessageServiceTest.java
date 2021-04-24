@@ -13,7 +13,7 @@
 //		GuestMessageService guestMessageService = (GuestMessageService) applicationContext
 //				.getBean("guestMessageServiceImpl");
 //		/*
-//		 * GuestMessage guestMessage = new GuestMessage();
+//		 * GuestMessageDO guestMessage = new GuestMessageDO();
 //		 * guestMessage.setEmail("162@qq.com"); guestMessage.setName("LCJ");
 //		 * guestMessage.setWords("huangming"); guestMessage.setTime(new Date());
 //		 * guestMessageService.addGuestMessage(guestMessage);
