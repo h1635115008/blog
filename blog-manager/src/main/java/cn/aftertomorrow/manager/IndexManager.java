@@ -1,6 +1,7 @@
 package cn.aftertomorrow.manager;
 
-import cn.aftertomorrow.dao.domain.Article;
+import cn.aftertomorrow.common.request.dto.article.ArticleDTO;
+import cn.aftertomorrow.dao.domain.ArticleDO;
 import cn.aftertomorrow.dao.mapper.ArticleMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.document.*;
@@ -127,7 +128,7 @@ public class IndexManager {
         indexWriter.close();
     }
 
-    public List<Article> search(Query query) throws IOException, InvalidTokenOffsetsException {
+    public List<ArticleDTO> search(Query query) throws IOException, InvalidTokenOffsetsException {
         // 搜索数据,两个参数：查询条件对象要查询的最大结果条数
         // 返回的结果是 按照匹配度排名得分前N名的文档信息（包含查询到的总条数信息、所有符合条件的文档的编号信息）。
         TopDocs topDocs = indexSearcher.search(query, 10);
@@ -141,14 +142,13 @@ public class IndexManager {
         QueryScorer scorer = new QueryScorer(query);
         // 准备高亮工具
         Highlighter highlighter = new Highlighter(formatter, scorer);
-        List<Article> articles = new ArrayList<>();
+        List<ArticleDTO> articles = new ArrayList<>();
         for (ScoreDoc scoreDoc : scoreDocs) {
             // 取出文档编号
             int docID = scoreDoc.doc;
             // 根据编号去找文档
             Document document = indexSearcher.doc(docID);
-            Article article = new Article();
-            System.out.println();
+            ArticleDTO article = new ArticleDTO();
             logger.info("id: {}", document.get("id"));
             article.setId(Integer.valueOf(document.get("id")));
             logger.info("title: {}", document.get("title"));
@@ -169,8 +169,8 @@ public class IndexManager {
     @PostConstruct
     public void initIndex() throws IOException {
         IndexWriter indexWriter = new IndexWriter(articleIndexDirectory(), new IndexWriterConfig(new IKAnalyzer()));
-        List<Article> articles = articleMapper.listAll();
-        for (Article article : articles) {
+        List<ArticleDO> articles = articleMapper.listAll();
+        for (ArticleDO article : articles) {
             Document document = new Document();
             Field fieldId = new StoredField("id", article.getId());
             Field fieldTitle = new TextField("title", article.getTitle(), Field.Store.YES);

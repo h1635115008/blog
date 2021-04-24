@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <encache>
-    <cache name="result" maxElementsInMemory="1000" timeToIdleSeconds="10"></cache>
+    <cache name="result" maxElementsInMemory="1000" timeToIdleSeconds="10"/>
 </encache>
