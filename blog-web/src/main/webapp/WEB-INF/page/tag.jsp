@@ -117,7 +117,7 @@
                 <c:forEach items="${requestScope.articleCollectionByTag.get(tag)}" var="article">
                     <a class="tagItem"
                        href="${pageContext.request.contextPath }/text/${article.id}">
-                        <div class="date"><fmt:formatDate pattern="yy-MM-dd" value="${article.time}"/>
+                        <div class="date">${article.time}
                         </div>
                         <div class="title">${article.title}
                         </div>
