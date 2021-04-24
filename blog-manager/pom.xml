@@ -103,6 +103,11 @@
             <groupId>cn.aftertomorrow</groupId>
             <artifactId>blog-dao</artifactId>
         </dependency>
+        <!--blog-common-->
+        <dependency>
+            <groupId>cn.aftertomorrow</groupId>
+            <artifactId>blog-common</artifactId>
+        </dependency>
         <!-- 引入SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>

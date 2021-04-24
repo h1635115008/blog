@@ -17,29 +17,29 @@
     <!-- 读取db.properties -->
     <context:property-placeholder location="classpath:db.properties"/>
     <!-- 开启扫描 -->
-    <context:component-scan base-package="cn.aftertomorrow.service,cn.aftertomorrow.manager"></context:component-scan>
+    <context:component-scan base-package="cn.aftertomorrow.service,cn.aftertomorrow.manager"/>
     <!-- 配置数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-        <property name="driverClassName" value="${jdbc.driver}"></property>
-        <property name="url" value="${jdbc.url}"></property>
-        <property name="username" value="${jdbc.username}"></property>
-        <property name="password" value="${jdbc.password}"></property>
-        <property name="maxTotal" value="${jdbc.maxTotal}"></property>
-        <property name="maxIdle" value="${jdbc.maxIdle}"></property>
-        <property name="initialSize" value="${jdbc.initialSize}"></property>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxTotal" value="${jdbc.maxTotal}"/>
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <property name="initialSize" value="${jdbc.initialSize}"/>
     </bean>
     <!-- 事务管理器，依赖于数据源 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"></property>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
     <!-- 开启事务注解 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <!-- 配置mybatis工厂 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"></property>
+        <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
-        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
         <!--集成分页插件-->
         <property name="plugins">
             <bean class="com.github.pagehelper.PageInterceptor">
@@ -58,8 +58,8 @@
         <property name="sqlSessionFactory" ref="sqlSessionFactory"></property> </bean> -->
     <!-- 配置mapper扫描器 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="cn.aftertomorrow.dao.mapper"></property>
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <property name="basePackage" value="cn.aftertomorrow.dao.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
     <!-- 开启缓存注解-->
     <cache:annotation-driven/>
@@ -70,6 +70,6 @@
     </bean>
     <bean id="ehcache"
           class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation" value="classpath:ehcache.xml"></property>
+        <property name="configLocation" value="classpath:ehcache.xml"/>
     </bean>
 </beans>
