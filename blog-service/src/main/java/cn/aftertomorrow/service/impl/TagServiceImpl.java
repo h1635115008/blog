@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.aftertomorrow.common.request.dto.tag.TagDTO;
-import cn.aftertomorrow.common.util.POJOUtils;
-import cn.aftertomorrow.dao.domain.Tag;
+import cn.aftertomorrow.common.util.JavaBeanUtils;
+import cn.aftertomorrow.dao.domain.TagDO;
 import cn.aftertomorrow.dao.mapper.TagMapper;
 import cn.aftertomorrow.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,22 +28,22 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<TagDTO> listAll() {
-        return POJOUtils.copyPropertiesToList(tagMapper.listAll(), TagDTO.class);
+        return JavaBeanUtils.copyPropertiesToList(tagMapper.listAll(), TagDTO.class);
     }
 
     @Override
     public Map<String, List<TagDTO>> getTagCollectionByKind() {
         Map<String, List<TagDTO>> tagCollection = new HashMap<>();
-        List<Tag> tags = tagMapper.listAll();
+        List<TagDO> tags = tagMapper.listAll();
         tags.forEach(e -> {
             List<TagDTO> tagList;
             if (null == tagCollection.get(e.getName())) {
                 tagList = new ArrayList<>();
-                tagList.add(POJOUtils.copyPropertiesToObject(e, TagDTO.class));
+                tagList.add(JavaBeanUtils.copyPropertiesToObject(e, TagDTO.class));
                 tagCollection.put(e.getName(), tagList);
             } else {
                 tagList = tagCollection.get(e.getName());
-                tagList.add(POJOUtils.copyPropertiesToObject(e, TagDTO.class));
+                tagList.add(JavaBeanUtils.copyPropertiesToObject(e, TagDTO.class));
             }
         });
         return tagCollection;

@@ -2,7 +2,7 @@ package cn.aftertomorrow.dao.mapper;
 
 import java.util.List;
 
-import cn.aftertomorrow.dao.domain.Tag;
+import cn.aftertomorrow.dao.domain.TagDO;
 
 /**
  * 标签mapper
@@ -16,5 +16,5 @@ public interface TagMapper {
      *
      * @return
      */
-    List<Tag> listAll();
+    List<TagDO> listAll();
 }

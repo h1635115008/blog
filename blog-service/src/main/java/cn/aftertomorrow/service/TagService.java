@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.aftertomorrow.common.request.dto.tag.TagDTO;
-import cn.aftertomorrow.dao.domain.Tag;
 
 /**
  * 标签服务类接口
