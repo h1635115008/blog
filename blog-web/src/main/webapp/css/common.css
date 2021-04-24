@@ -48,9 +48,10 @@ header {
     width: 100%;
     height: 56px;
     position: fixed;
-    top: 0px;
+    top: 0;
     background: #FFFFFF;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
+    z-index: 100;
 }
 
 .serachBox {
@@ -202,7 +203,9 @@ body #background {
     display: block;
     width: 30px;
     height: 30px;
+    position: static;
     transition: transform 1s;
+    transform: none;
 }
 
 #button:hover {
@@ -412,7 +415,7 @@ body #background {
     padding: 1px;
 }
 
-.main .content {
+.main > .content {
     width: 100%;
     margin-bottom: 60px;
     border-radius: 10px;
