@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.aftertomorrow.dao.mapper.UserMapper">
-    <select id="findUserByName" parameterType="String" resultType="user">
-		select * from user
-		where username = #{username}
-	</select>
+    <select id="findUserByName" parameterType="String" resultType="userDO">
+        select username, password
+        from user
+        where username = #{username}
+    </select>
 </mapper>

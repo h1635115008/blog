@@ -9,8 +9,7 @@ import lombok.Data;
  * @date 2019/09/26
  */
 @Data
-public class User {
-    private Integer id;
+public class UserDO extends BaseDO {
     private String username;
     private String password;
 }

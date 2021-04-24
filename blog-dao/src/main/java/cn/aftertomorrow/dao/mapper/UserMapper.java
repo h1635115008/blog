@@ -1,6 +1,6 @@
 package cn.aftertomorrow.dao.mapper;
 
-import cn.aftertomorrow.dao.domain.User;
+import cn.aftertomorrow.dao.domain.UserDO;
 
 /**
  * 用户mapper
@@ -15,5 +15,5 @@ public interface UserMapper {
      * @param name
      * @return
      */
-    User findUserByName(String name);
+    UserDO findUserByName(String name);
 }
