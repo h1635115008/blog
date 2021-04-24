@@ -1,6 +1,6 @@
 package cn.aftertomorrow.dao.mapper;
 
-import cn.aftertomorrow.dao.domain.Article;
+import cn.aftertomorrow.dao.domain.ArticleDO;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface ArticleMapper {
      * @param article
      * @return
      */
-    int addArticle(Article article);
+    int addArticle(ArticleDO article);
 
     /**
      * 编辑文章
@@ -25,7 +25,7 @@ public interface ArticleMapper {
      * @param article
      * @return
      */
-    int editArticle(Article article);
+    int editArticle(ArticleDO article);
 
     /**
      * 删除文章
@@ -40,7 +40,7 @@ public interface ArticleMapper {
      *
      * @return
      */
-    List<Article> listAll();
+    List<ArticleDO> listAll();
 
     /**
      * 通过文章id获取文章
@@ -48,21 +48,21 @@ public interface ArticleMapper {
      * @param id
      * @return
      */
-    Article findArticleById(Integer id);
+    ArticleDO findArticleById(Integer id);
 
     /**
      * 通过标签获取文章
      *
      * @return
      */
-    List<Article> listAllWithTag();
+    List<ArticleDO> listAllWithTag();
 
     /**
      * 通过状态获取文章
      *
      * @return
      */
-    List<Article> listAllWithStatus();
+    List<ArticleDO> listAllWithStatus();
 
     /**
      * 获取文章数量
@@ -85,5 +85,5 @@ public interface ArticleMapper {
      * @param keywords
      * @return
      */
-    List<Article> searchByKeywords(String keywords);
+    List<ArticleDO> searchByKeywords(String keywords);
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import cn.aftertomorrow.common.request.dto.article.ArticleDTO;
 import cn.aftertomorrow.common.response.Result;
 import cn.aftertomorrow.common.response.vo.ArticleVO;
-import cn.aftertomorrow.common.util.POJOUtils;
+import cn.aftertomorrow.common.util.JavaBeanUtils;
 import cn.aftertomorrow.common.util.ResultUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -93,7 +93,7 @@ public class ArticleController {
         String deCodeStr = URLDecoder.decode((keywords), "UTF-8");
         if (deCodeStr != null && !deCodeStr.equals("")) {
             List<ArticleDTO> articleDTOList = articleService.searchByKeywords(deCodeStr);
-            List<ArticleVO> articleVOList = POJOUtils.copyPropertiesToList(articleDTOList, ArticleVO.class);
+            List<ArticleVO> articleVOList = JavaBeanUtils.copyPropertiesToList(articleDTOList, ArticleVO.class);
             return ResultUtils.createSuccessResult(articleVOList);
         }
         return ResultUtils.createSuccessResult(null);

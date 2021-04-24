@@ -68,7 +68,7 @@
                                           title="查看">${article.title}</u>
                     </td>
                     <td>${article.tag.replaceAll(","," ")}</td>
-                    <td><fmt:formatDate pattern="yyyy-MM-dd" value="${article.time}"/></td>
+                    <td>${article.time}</td>
                     <td>${article.view}</td>
                     <td class="td-status">
                         <c:choose>

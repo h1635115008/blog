@@ -21,7 +21,7 @@ public class ArticleDTO extends BaseDTO {
     private String code;
     private String keywords;
     private Integer view;
-    private Date time;
+    private String time;
     private String name;
     private String unicode;
     private Integer status;

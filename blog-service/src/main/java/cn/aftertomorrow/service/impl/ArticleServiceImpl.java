@@ -4,15 +4,19 @@ import java.io.IOException;
 import java.util.*;
 
 import cn.aftertomorrow.common.request.dto.article.ArticleDTO;
-import cn.aftertomorrow.common.util.POJOUtils;
+import cn.aftertomorrow.common.transfer.FieldRule;
+import cn.aftertomorrow.common.transfer.ValueParser;
+import cn.aftertomorrow.common.util.JavaBeanUtils;
 import cn.aftertomorrow.common.util.StringUtils;
-import cn.aftertomorrow.dao.domain.Article;
+import cn.aftertomorrow.dao.domain.ArticleDO;
 import cn.aftertomorrow.dao.mapper.ArticleMapper;
 import cn.aftertomorrow.manager.IndexManager;
 import cn.aftertomorrow.service.ArticleService;
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import net.sf.ehcache.CacheManager;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -26,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.wltea.analyzer.lucene.IKAnalyzer;
+import sun.plugin2.util.PojoUtil;
 
 /**
  * 文章服务类实现类
@@ -46,8 +51,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDTO> listAll() {
-        List<Article> articleList = articleMapper.listAll();
-        return POJOUtils.copyPropertiesToList(articleList, ArticleDTO.class);
+        List<ArticleDO> articleList = articleMapper.listAll();
+
+        List<FieldRule> fieldRules = Lists.newArrayList(
+                FieldRule.create("gmtCreate", "time", ValueParser.DATE_PARSER_TO_YMD)
+        );
+        return JavaBeanUtils.copyPropertiesToList(articleList, ArticleDTO.class, fieldRules);
     }
 
     @Override
@@ -55,24 +64,33 @@ public class ArticleServiceImpl implements ArticleService {
         if (isAddView) {
             articleMapper.addArticleViewCount(id);
         }
-        Article article = articleMapper.findArticleById(id);
-        return POJOUtils.copyPropertiesToObject(article, ArticleDTO.class);
+
+        ArticleDO article = articleMapper.findArticleById(id);
+
+        List<FieldRule> fieldRules = Lists.newArrayList(
+                FieldRule.create("gmtCreate", "time", ValueParser.DATE_PARSER_TO_YMD)
+        );
+        return JavaBeanUtils.copyPropertiesToObject(article, ArticleDTO.class, fieldRules);
     }
 
     @Override
     public PageInfo<ArticleDTO> findByPage(Integer pageNum, Integer size) {
         Page<ArticleDTO> page = PageHelper.startPage(pageNum, size);
 
-        articleMapper.listAllWithStatus();
+        List<ArticleDO> articles = articleMapper.listAllWithStatus();
 
-        return new PageInfo<>(page);
+        PageInfo<ArticleDTO> pageInfo = new PageInfo<>(page);
+        List<FieldRule> fieldRules = Lists.newArrayList(
+                FieldRule.create("gmtCreate", "time", ValueParser.DATE_PARSER_TO_YMD)
+        );
+        pageInfo.setList(JavaBeanUtils.copyPropertiesToList(articles, ArticleDTO.class, fieldRules));
+        return pageInfo;
     }
 
     @Override
     public int addArticle(ArticleDTO article) {
         if (StringUtils.notEmpty(article.getTag(), article.getSummary(), article.getTitle())) {
-            article.setTime(new Date());
-            return articleMapper.addArticle(POJOUtils.copyPropertiesToObject(article, Article.class));
+            return articleMapper.addArticle(JavaBeanUtils.copyPropertiesToObject(article, ArticleDO.class));
         } else {
             return 0;
         }
@@ -80,7 +98,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public int editArticle(ArticleDTO article) {
-        return articleMapper.editArticle(POJOUtils.copyPropertiesToObject(article, Article.class));
+        return articleMapper.editArticle(JavaBeanUtils.copyPropertiesToObject(article, ArticleDO.class));
     }
 
     @Override
@@ -101,22 +119,26 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleDTO> searchByKeywords(String keywords) throws ParseException, IOException, InvalidTokenOffsetsException {
         QueryParser queryParser = new QueryParser("title", new IKAnalyzer());
         Query query = queryParser.parse(QueryParser.escape(keywords));
-        return POJOUtils.copyPropertiesToList(indexManager.search(query), ArticleDTO.class);
+        return JavaBeanUtils.copyPropertiesToList(indexManager.search(query), ArticleDTO.class);
     }
 
     @Override
     public Map<String, List<ArticleDTO>> getArticleCollectionByYear() {
         Map<String, List<ArticleDTO>> articleCollection = new TreeMap<>(Comparator.reverseOrder());
-        List<Article> articles = articleMapper.listAllWithStatus();
+        List<ArticleDO> articles = articleMapper.listAllWithStatus();
         articles.forEach(e -> {
+            List<FieldRule> fieldRules = Lists.newArrayList(
+                    FieldRule.create("gmtCreate", "time", ValueParser.DATE_PARSER_TO_MD)
+            );
             List<ArticleDTO> articleList;
-            if (null == articleCollection.get(String.valueOf(e.getTime().getYear() + 1900))) {
+            String year = String.valueOf(DateUtil.parseDate(e.getGmtCreate()).getYear() + 1900);
+            if (null == articleCollection.get(year)) {
                 articleList = new ArrayList<>();
-                articleList.add(POJOUtils.copyPropertiesToObject(e, ArticleDTO.class));
-                articleCollection.put(e.getName(), articleList);
+                articleList.add(JavaBeanUtils.copyPropertiesToObject(e, ArticleDTO.class, fieldRules));
+                articleCollection.put(year, articleList);
             } else {
-                articleList = articleCollection.get(String.valueOf(e.getTime().getYear() + 1900));
-                articleList.add(POJOUtils.copyPropertiesToObject(e, ArticleDTO.class));
+                articleList = articleCollection.get(year);
+                articleList.add(JavaBeanUtils.copyPropertiesToObject(e, ArticleDTO.class, fieldRules));
             }
         });
         return articleCollection;
@@ -125,16 +147,19 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Map<String, List<ArticleDTO>> getArticleCollectionByTag() {
         Map<String, List<ArticleDTO>> articleCollection = new HashMap<>();
-        List<Article> articles = articleMapper.listAllWithTag();
+        List<ArticleDO> articles = articleMapper.listAllWithTag();
         articles.forEach(e -> {
             List<ArticleDTO> articleList;
+            List<FieldRule> fieldRules = Lists.newArrayList(
+                    FieldRule.create("gmtCreate", "time", ValueParser.DATE_PARSER_TO_YMD)
+            );
             if (null == articleCollection.get(e.getName())) {
                 articleList = new ArrayList<>();
-                articleList.add(POJOUtils.copyPropertiesToObject(e, ArticleDTO.class));
+                articleList.add(JavaBeanUtils.copyPropertiesToObject(e, ArticleDTO.class, fieldRules));
                 articleCollection.put(e.getName(), articleList);
             } else {
                 articleList = articleCollection.get(e.getName());
-                articleList.add(POJOUtils.copyPropertiesToObject(e, ArticleDTO.class));
+                articleList.add(JavaBeanUtils.copyPropertiesToObject(e, ArticleDTO.class, fieldRules));
             }
         });
         return articleCollection;
@@ -142,6 +167,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDTO> listAllWithStatus() {
-        return POJOUtils.copyPropertiesToList(articleMapper.listAllWithStatus(), ArticleDTO.class);
+        return JavaBeanUtils.copyPropertiesToList(articleMapper.listAllWithStatus(), ArticleDTO.class);
     }
 }

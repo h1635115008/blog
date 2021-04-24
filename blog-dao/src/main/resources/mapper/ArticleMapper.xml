@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.aftertomorrow.dao.mapper.ArticleMapper">
-    <select id="findArticleById" parameterType="Integer" resultType="article">
+    <select id="findArticleById" parameterType="Integer" resultType="articleDO">
 		select *
 		from article
 		where id=#{id}
 	</select>
-    <insert id="addArticle" parameterType="article">
+    <insert id="addArticle" parameterType="articleDO">
 		insert into
-		article(title,summary,text,code,tag,time,status,keywords)
-		values(#{title},#{summary},#{text},#{code},#{tag},#{time},#{status},#{keywords})
+		article(title,summary,text,code,tag,status,keywords)
+		values(#{title},#{summary},#{text},#{code},#{tag},#{status},#{keywords})
 	</insert>
-    <update id="editArticle" parameterType="article">
+    <update id="editArticle" parameterType="articleDO">
         update article
         <trim prefix="set" suffixOverrides=",">
             <if test="title != null and title != ''">
@@ -45,18 +45,18 @@
             #{item}
         </foreach>
     </delete>
-    <select id="listAll" resultType="article">
+    <select id="listAll" resultType="articleDO">
 		select *
 		from article
 		order by id desc
 	</select>
-    <select id="listAllWithStatus" resultType="article">
+    <select id="listAllWithStatus" resultType="articleDO">
 		select *
 		from article
 		where status=1
 		order by id desc
 	</select>
-    <select id="listAllWithTag" resultType="article">
+    <select id="listAllWithTag" resultType="articleDO">
 		select
 		a.*,t.unicode,t.name
 		from article a, tag t
@@ -68,7 +68,7 @@
 		from article
 		where status=1
 	</select>
-    <select id="searchByKeywords" parameterType="String" resultType="article">
+    <select id="searchByKeywords" parameterType="String" resultType="articleDO">
 		select id,title
         from article
         where Match(title,text) Against(concat('"',#{keywords},'"') IN BOOLEAN MODE)
