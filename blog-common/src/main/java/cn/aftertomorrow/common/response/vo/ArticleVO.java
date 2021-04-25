@@ -12,6 +12,7 @@ import java.util.Date;
  */
 @Data
 public class ArticleVO extends BaseVO {
+    private Integer id;
     private String title;
     private String summary;
     private String text;

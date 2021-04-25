@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.wltea.analyzer.lucene.IKAnalyzer;
-import sun.plugin2.util.PojoUtil;
 
 /**
  * 文章服务类实现类
@@ -119,7 +118,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleDTO> searchByKeywords(String keywords) throws ParseException, IOException, InvalidTokenOffsetsException {
         QueryParser queryParser = new QueryParser("title", new IKAnalyzer());
         Query query = queryParser.parse(QueryParser.escape(keywords));
-        return JavaBeanUtils.copyPropertiesToList(indexManager.search(query), ArticleDTO.class);
+        return indexManager.searchArticle(query);
     }
 
     @Override

@@ -20,12 +20,15 @@ back.onclick = function () {
 var result = document.getElementById("result");
 var input = document.getElementById("input");
 var timer;
+var xmlhttp;
 
-function serach(e, url) {
+function search(e, url) {
     if (e.value.trim() != "") {
         clearTimeout(timer);
+        if (typeof (xmlhttp) != "undefined") {
+            xmlhttp.abort();
+        }
         timer = setTimeout(function () {
-            var xmlhttp;
             if (window.XMLHttpRequest) {
                 // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
                 xmlhttp = new XMLHttpRequest();
@@ -37,14 +40,12 @@ function serach(e, url) {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     var response = JSON.parse(xmlhttp.responseText);
                     var str = "";
-                    for (var i = 0; i < response.searchItems.length; i++) {
-                        console.log(response.searchItems[i])
-                        str += "<a class='resultItem' title = '" + response.searchItems[i].title.replace(/<.*?>/g, "") + "'href='" + url + "/text/" + response.searchItems[i].id + "'>" + response.searchItems[i].title + "</a>"
+                    for (var i = 0; i < response.data.length; i++) {
+                        str += "<a class='resultItem' title = '" + response.data[i].title.replace(/<.*?>/g, "") + "'href='" + url + "/text/" + response.data[i].id + "'>" + response.data[i].title + "</a>"
                     }
                     result.innerHTML = str;
                 }
             }
-            console.log(e.value);
             xmlhttp.open("POST", url + "/search", true);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
             xmlhttp.send("keywords=" + encodeURIComponent(encodeURIComponent(e.value)));

@@ -3,6 +3,7 @@ package cn.aftertomorrow.web.controller;
 import java.net.URLDecoder;
 import java.util.List;
 
+import cn.aftertomorrow.common.enumeration.ResultCodeEnums;
 import cn.aftertomorrow.common.request.dto.article.ArticleDTO;
 import cn.aftertomorrow.common.response.Result;
 import cn.aftertomorrow.common.response.vo.ArticleVO;
@@ -91,11 +92,9 @@ public class ArticleController {
     @ResponseBody
     public Result<List<ArticleVO>> search(String keywords) throws Exception {
         String deCodeStr = URLDecoder.decode((keywords), "UTF-8");
-        if (deCodeStr != null && !deCodeStr.equals("")) {
-            List<ArticleDTO> articleDTOList = articleService.searchByKeywords(deCodeStr);
-            List<ArticleVO> articleVOList = JavaBeanUtils.copyPropertiesToList(articleDTOList, ArticleVO.class);
-            return ResultUtils.createSuccessResult(articleVOList);
+        if (deCodeStr != null && !"".equals(deCodeStr)) {
+            return ResultUtils.createSuccessResult(JavaBeanUtils.copyPropertiesToList(articleService.searchByKeywords(deCodeStr), ArticleVO.class));
         }
-        return ResultUtils.createSuccessResult(null);
+        return ResultUtils.createFailResult(ResultCodeEnums.ARGS_ERROR, "查询关键字不能为空");
     }
 }

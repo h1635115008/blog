@@ -9,7 +9,7 @@
         <div class="serach">
             <div class="inputBox">
                 <input type="text" class="input" name="keywords" id="input"
-                       oninput="serach(this,'${pageContext.request.contextPath }')" autocomplete="off"
+                       oninput="search(this,'${pageContext.request.contextPath }')" autocomplete="off"
                        placeholder="keywords"/>
             </div>
             <div class="result" id="result">

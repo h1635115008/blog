@@ -42,95 +42,60 @@ public class IndexManager {
 
     private IndexSearcher indexSearcher;
 
-    private static String INDEX_PATH = "C:\\Users\\Administrator\\Desktop\\huangming\\lucene";
-
-    private static IndexWriter indexWriter;
-
-    static {
-        try {
-            indexWriter = new IndexWriter(FSDirectory.open(new File(INDEX_PATH).toPath()), new IndexWriterConfig(new IKAnalyzer()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void createIndex() throws IOException {
-        //1、创建一个Directory对象，指定索引保存的位置。
-        //把索引库保存在内存中
-        //Directory directory = new RAMDirec tory();
-        //把索引库保存在磁盘
-//        Directory directory = FSDirectory.open(new File(INDEX_PATH).toPath());
-        //2、 基于Directory对象创建一 个Indexwriter对象
-//        IndexWriter indexWriter = new IndexWriter(directory, new IndexWriterConfig(new IKAnalyzer()));
-        //3、读取数据库，对应每条记录创建一个文档对象。
-        File dir = new File("C:\\Users\\ideapad\\workspace\\lucene\\documents");
-        File[] files = dir.listFiles();
-        for (File file : files) {
-            String filePath = file.getPath();
-            String fileName = file.getName();
-            String fileContent = FileUtils.readFileToString(file, "UTF-8");
-            long fileSize = FileUtils.sizeOf(file);
-            Field fieldName = new TextField("name", fileName, Field.Store.YES);
-//            Field fieldPath = new TextField("path", filePath, Field.Store.YES);
-            Field fieldPath = new StoredField("path", filePath);
-            Field fieldContent = new TextField("content", fileContent, Field.Store.YES);
-//            Field fieldSize = new TextField("getArticleSize", fileSize + "", Field.Store.YES);
-            Field fieldSize = new LongPoint("getArticleSize", fileSize);
-            Field fieldStore = new StoredField("getArticleSize", fileSize);
-            //4、向文档对象中添加域
-            Document document = new Document();
-            document.add(fieldContent);
-            document.add(fieldName);
-            document.add(fieldPath);
-            document.add(fieldSize);
-            document.add(fieldStore);
-            //5、把文档对象写入索引库
-            indexWriter.addDocument(document);
-        }
-        //6、关闭indexWriter对象
-        destory();
-    }
-
-    public void addDocument() throws IOException {
-        //创建-个Indexwriter对象，需要使用IKAnalyzer作为分析器
-//        IndexWriter indexWriter =
-//                new IndexWriter(FSDirectory.open(new File(INDEX_PATH).toPath()),
-//                        new IndexWriterConfig(new IKAnalyzer()));
-        //创建一个Document对象
+    /**
+     * 添加索引文档
+     *
+     * @param article
+     * @throws IOException
+     */
+    public void addArticleDocument(ArticleDTO article) throws IOException {
+        IndexWriter indexWriter = new IndexWriter(articleIndexDirectory(), new IndexWriterConfig(new IKAnalyzer()));
         Document document = new Document();
-        //向document对象中添加域
-        document.add(new TextField("name", "新添加的文件 ", Field.Store.YES));
-        document.add(new TextField("content ", "新添加的文件内容", Field.Store.NO));
-        document.add(new StoredField("path", ""));
+        // 向document对象中添加域
+        document.add(new StoredField("id", article.getId()));
+        document.add(new TextField("title", article.getTitle(), Field.Store.YES));
         //把文档写入索引库
         indexWriter.addDocument(document);
         //关闭索引库
-        destory();
+        indexWriter.close();
 
     }
 
+    /**
+     * 删除所有文档
+     *
+     * @throws IOException
+     */
     public void deleteALLDocument() throws IOException {
+        IndexWriter indexWriter = new IndexWriter(articleIndexDirectory(), new IndexWriterConfig(new IKAnalyzer()));
         indexWriter.deleteAll();
-        destory();
-    }
-
-    public void deleteDocumentByTerm() throws IOException {
-        indexWriter.deleteDocuments(new Term("name", "name"));
-        destory();
-    }
-
-    public void deleteDocumentByQuery() throws IOException {
-//        indexWriter.deleteDocuments();
-//        indexWriter.close();
-    }
-
-    public static void destory() throws IOException {
         indexWriter.close();
     }
 
-    public List<ArticleDTO> search(Query query) throws IOException, InvalidTokenOffsetsException {
-        // 搜索数据,两个参数：查询条件对象要查询的最大结果条数
-        // 返回的结果是 按照匹配度排名得分前N名的文档信息（包含查询到的总条数信息、所有符合条件的文档的编号信息）。
+    /**
+     * 通过分词项删除文档
+     *
+     * @param field
+     * @param text
+     * @throws IOException
+     */
+    public void deleteDocumentByTerm(String field, String text) throws IOException {
+        IndexWriter indexWriter = new IndexWriter(articleIndexDirectory(), new IndexWriterConfig(new IKAnalyzer()));
+        indexWriter.deleteDocuments(new Term(field, text));
+        indexWriter.close();
+    }
+
+    /**
+     * 搜索文章
+     *
+     * @param query
+     * @return
+     * @throws IOException
+     * @throws InvalidTokenOffsetsException
+     */
+    public List<ArticleDTO> searchArticle(Query query) throws IOException, InvalidTokenOffsetsException {
+        /*搜索数据,两个参数：查询条件对象要查询的最大结果条数
+        返回的结果是 按照匹配度排名得分前N名的文档信息（包含查询到的总条数信息、所有符合条件的文档的编号信息）。*/
         TopDocs topDocs = indexSearcher.search(query, 10);
         // 获取总条数
         long totalHits = topDocs.totalHits.value;
@@ -162,12 +127,23 @@ public class IndexManager {
         return articles;
     }
 
+    /**
+     * 打开文件
+     *
+     * @return
+     * @throws IOException
+     */
     public Directory articleIndexDirectory() throws IOException {
-        return FSDirectory.open(new File(IndexManager.class.getClassLoader().getResource("").getPath() + "/index").toPath());
+        return FSDirectory.open(new File(IndexManager.class.getClassLoader().getResource("").getPath() + "/index/article").toPath());
     }
 
+    /**
+     * 初始化文章索引
+     *
+     * @throws IOException
+     */
     @PostConstruct
-    public void initIndex() throws IOException {
+    public void initArticleIndex() throws IOException {
         IndexWriter indexWriter = new IndexWriter(articleIndexDirectory(), new IndexWriterConfig(new IKAnalyzer()));
         List<ArticleDO> articles = articleMapper.listAll();
         for (ArticleDO article : articles) {
@@ -181,13 +157,20 @@ public class IndexManager {
         indexWriter.close();
         indexReader = DirectoryReader.open(articleIndexDirectory());
         indexSearcher = new IndexSearcher(indexReader);
+        logger.info("lucene article index is init.");
     }
 
+    /**
+     * 销毁文章索引
+     *
+     * @throws IOException
+     */
     @PreDestroy
-    public void destroy() throws IOException {
+    public void destroyArticleIndex() throws IOException {
         IndexWriter indexWriter = new IndexWriter(articleIndexDirectory(), new IndexWriterConfig(new IKAnalyzer()));
         indexWriter.deleteAll();
         indexWriter.close();
         indexReader.close();
+        logger.info("lucene article index is destroy.");
     }
 }
